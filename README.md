@@ -5,14 +5,13 @@ A node.js module for handling uploaded images and text fields with
 **multipart/form-data** for [express.js](https://www.npmjs.com/package/express).
 
 ## Requirements
-- [node.js](https://nodejs.org/) -- v11.5.0
+- [node.js](https://nodejs.org/) -- v11.5.0 or newer
 
 ## Usage
 ```javascript
 const path = require('path')
 
-// const uploadImage = require('@exio.tech/upload-multipart-image')
-const uploadImage = require('../index')
+const uploadImage = require('@exio.tech/upload-multipart-image')
 const express = require('express')
 
 

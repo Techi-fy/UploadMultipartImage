@@ -1,7 +1,6 @@
 const path = require('path')
 
-// const uploadImage = require('@exio.tech/upload-multipart-image')
-const uploadImage = require('../index')
+const uploadImage = require('../')
 const express = require('express')
 
 
