@@ -1,0 +1,34 @@
+{
+  "name": "@exio.tech/upload-multipart-image",
+  "version": "1.0.0",
+  "description": "Upload images and text-fields with multipart/form-data and express.js",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "private": false,
+  "scripts": {
+    "dev": "nodemon --watch . --ext js,ts --exec 'node index.js'"
+  },
+  "keywords": [
+    "upload",
+    "image",
+    "upload image",
+    "sharp",
+    "multipart/form-data"
+  ],
+  "author": "Ando",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/exiotech/UploadMultipartImage.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "busboy": "^0.3.1",
+    "http-errors": "^1.8.0",
+    "promise.allsettled": "^1.0.4",
+    "sharp": "^0.27.2",
+    "uuid": "^8.3.2"
+  }
+}

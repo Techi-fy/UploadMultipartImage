@@ -1,0 +1,15 @@
+{
+  "name": "@exio.tech/upload-multipart-image-example",
+  "version": "1.0.0",
+  "description": "Example for @exio.tech/upload-multipart-image package",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "@exio.tech/upload-multipart-image": "^1.0.0"
+  }
+}
