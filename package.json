@@ -4,7 +4,7 @@
   "description": "Upload images and text-fields with multipart/form-data and express.js",
   "main": "index.js",
   "types": "index.d.ts",
-  "private": false,
+  "private": true,
   "scripts": {
     "dev": "nodemon --watch . --ext js,ts --exec 'node index.js'"
   },
