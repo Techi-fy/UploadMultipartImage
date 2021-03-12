@@ -50,7 +50,13 @@ async function allSettled(promises) {
     return mapped
 }
 
+function includesArray(src, array) {
+    const keyMap = src.reduce((keyMap, key) => (keyMap[key] = true, keyMap), {})
+    return array.every(key => key in keyMap)
+}
+
 module.exports = {
+    includesArray,
     unlinkWithError,
     createSubmitError,
     allSettled,

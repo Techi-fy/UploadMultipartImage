@@ -54,6 +54,11 @@ declare function uploadImage(opts: {
      * @default ()=>sharp()
      */
     sharp?: (file: fileInfo) => Sharp;
+    /**
+     * Defines, that all given image fields are required - if boolean, or which image fields are required - if array of convertables to NOT_EMPTY strings.
+     * @default true
+     */
+    required?: boolean | string[]
     /**See _busboy_ options- https://www.npmjs.com/package/busboy#busboy-methods*/
     fields?: number;
     /**See _busboy_ options- https://www.npmjs.com/package/busboy#busboy-methods*/

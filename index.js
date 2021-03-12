@@ -17,6 +17,7 @@ const {
 
 
 const {
+    includesArray,
     allSettled,
     createSubmitError,
     unlinkWithError,
@@ -32,13 +33,14 @@ const destinationDefaultFunc = () => os.tmpdir()
 const filenameDefaultFunc = () => uuidv4()
 const sharpDefaultFunc = () => sharp()
 
-module.exports = (opts) => {
+module.exports = (opts = {}) => {
     let {
         imageFieldNames = [],
         imageMaxSize,
         destination: destinationFunc,
         filename: filenameFunc,
         sharp: sharpFunc = sharpDefaultFunc,
+        required = true,
         fields,
         fieldNameSize,
         fieldSize,
@@ -57,6 +59,14 @@ module.exports = (opts) => {
 
     if (typeof sharp !== 'function') {
         throw new Error(`If provided, sharp must be a function returning sharp instance`)
+    }
+
+    if (
+        required instanceof Array
+        &&
+        required.some(fieldName => !(fieldName + '').length)
+    ) {
+        throw new Error(`If provided, required must be a boolean or an array of convertables to NOT_EMPTY strings`)
     }
 
     let isSingleFile = true
@@ -86,6 +96,10 @@ module.exports = (opts) => {
         }
     }
 
+    if (!(required instanceof Array)) {
+        required = !!required
+    }
+
     return async function (req, res, next) {
         const busboy = new Busboy({
             headers: req.headers,
@@ -99,6 +113,7 @@ module.exports = (opts) => {
         })
         req.pipe(busboy)
 
+        const sendedImageFields = []
         const imageOpsQueue = []
         const fieldOpsQueue = []
 
@@ -114,6 +129,8 @@ module.exports = (opts) => {
                     defaultFilename: filenameDefaultFunc(),
                     defaultSharp: sharpDefaultFunc(),
                 }
+                sendedImageFields.push(fieldname)
+
                 if (!imageFieldNames.includes(fieldname)) {
                     file.resume()
                     throw createSubmitError(`ImageField: ${fieldname} is not expected`, {
@@ -147,8 +164,8 @@ module.exports = (opts) => {
                     writeFileStream.on('finish', () => res())
                     writeFileStream.on('error', () => res())
                 })
-                
-                
+
+
                 const sharpStream = sharpFunc(fileInfo)
                 sharpStream.pipe(writeFileStream)
                 file.pipe(sharpStream)
@@ -230,6 +247,20 @@ module.exports = (opts) => {
                 fieldsMap[field.fieldname] = field.val
                 return fieldsMap
             }, {})
+
+            if (required instanceof Array) {
+                if (!includesArray(sendedImageFields, required)) {
+                    // const error = new Error(`Sended image fields: ${sendedImageFields} are not include all required image fields: ${required}`)
+                    // error.sended = sendedImageFields
+                    // error.required = required
+                    return next(createError(400, `Sended image fields: ${sendedImageFields} are not include all required image fields: ${required}`))
+                }
+
+            } else {
+                if (required && !includesArray(sendedImageFields, imageFieldNames)) {
+                    return next(createError(400, `Sended image fields: ${sendedImageFields} are not include all required image fields: ${imageFieldNames}`))
+                }
+            }
 
             if (errors.length) {
                 console.log(errors)
