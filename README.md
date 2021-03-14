@@ -67,6 +67,6 @@ You can _omit_ **imageFieldNames** property, set it to _null_ or _empty_array_, 
 
 Other details see in **TSDocs**.
 
-[busboy-options]:(https://www.npmjs.com/package/busboy#busboy-methods)
-[express]:(https://www.npmjs.com/package/express)
-[nodejs]:(https://nodejs.org/)
+[busboy-options]: https://www.npmjs.com/package/busboy#busboy-methods
+[express]: https://www.npmjs.com/package/express
+[nodejs]: https://nodejs.org/
