@@ -2,7 +2,7 @@
 
 ## Description
 A node.js module for handling uploaded images and text fields with
-**multipart/form-data** for [express.js](https://www.npmjs.com/package/express).
+**multipart/form-data** for [express.js](express).
 
 ## Requirements
 - [node.js](https://nodejs.org/) -- v11.5.0 or newer
@@ -48,9 +48,24 @@ app.listen(8000, (err) => {
     console.log('Server started successfully')
 })
 ```
+Key | Description | Default
+---| ---| ---|
+**imageFieldNames?** | Defines which image fieldnames your application expects. If any, then not expected image fields will fire **errors**, if nothing expeted, then any files will be simply thrown away | **[]**, i.e. images will thrown away
+**required?** | Defines subset of **imageFieldNames** which are required, or boolean which indicates if all provided **imageFieldNames** are required | **true**
+**destination?** | Defines folder path where to save uploaded images | **os.tmpdir()**
+**filename?** | Defines filename to save image with (extension included) | **uuidv4()**
+**sharp?** | Defines function which **MUST** return new Instance of sharp to process images | **sharp()**
+**imageMaxSize** | Defines Max Size in bytes for image fields, Details and Default See - [BusBoy limits:fileSize](busboy-options)
+**fieldNameSize** | Defines fieldnames Max Size in bytes, Details and Default See - [BusBoy limits:fieldNameSize](busboy-options)
+**fieldSize** | Defines non-image field value Max Size in bytes, Details and Default See - [BusBoy limits:fieldSize](busboy-options)
+**fields** | Defines non-image fields Max count, Details and Default See - [BusBoy limits:fields](busboy-options)
+
 If **imageFieldNames** is an array of convertables to strings, then files metadata will be provided
-with **req.files**, not **req.file**.
+with **req.files**, if it is a string, then it will be provided with **req.file**.
 
-You can _omit_ this property, set it to _null_ or _empty_array_, then images will be simply thrown away, and middleware will act as simle text field handler.
+You can _omit_ **imageFieldNames** property, set it to _null_ or _empty_array_, then images will be simply thrown away, and middleware will act as simle text field handler.
 
-Details see in **TSDocs**.
+Other details see in **TSDocs**.
+
+[busboy-options]:(https://www.npmjs.com/package/busboy#busboy-methods)
+[express]:(https://www.npmjs.com/package/express)

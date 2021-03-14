@@ -28,6 +28,7 @@ const {
 
 
 const mkdir = promisify(fs.mkdir)
+const unlink = promisify(fs.unlink)
 
 const destinationDefaultFunc = () => os.tmpdir()
 const filenameDefaultFunc = () => uuidv4()
@@ -37,8 +38,8 @@ module.exports = (opts = {}) => {
     let {
         imageFieldNames = [],
         imageMaxSize,
-        destination: destinationFunc,
-        filename: filenameFunc,
+        destination: destinationFunc = destinationDefaultFunc,
+        filename: filenameFunc = filenameDefaultFunc,
         sharp: sharpFunc = sharpDefaultFunc,
         required = true,
         fields,
@@ -54,19 +55,7 @@ module.exports = (opts = {}) => {
             imageFieldNames.some(fieldName => !(fieldName + '').length)
         )
     ) {
-        throw new Error('If providing, imageFieldNames must be a NOT_EMPTY string, or as array of convertables to NOT_EMPTY strings')
-    }
-
-    if (typeof sharp !== 'function') {
-        throw new Error(`If provided, sharp must be a function returning sharp instance`)
-    }
-
-    if (
-        required instanceof Array
-        &&
-        required.some(fieldName => !(fieldName + '').length)
-    ) {
-        throw new Error(`If provided, required must be a boolean or an array of convertables to NOT_EMPTY strings`)
+        throw new Error('If providing, imageFieldNames must be a NOT_EMPTY string, or as array of convertables to NOT_EMPTY strings, or anything else to omit image handling')
     }
 
     let isSingleFile = true
@@ -95,8 +84,26 @@ module.exports = (opts = {}) => {
             filenameFunc = filenameDefaultFunc
         }
     }
+    if (typeof sharpFunc !== 'function') {
+        sharpFunc = sharpDefaultFunc
+    }
 
-    if (!(required instanceof Array)) {
+
+    if (
+        required instanceof Array
+        &&
+        (
+            required.some(fieldName => !(fieldName + '').length)
+            ||
+            !includesArray(imageFieldNames, required.map(fieldName => fieldName + ''))
+        )
+    ) {
+        throw new Error(`If provided, required must be a boolean or an array of convertables to NOT_EMPTY strings representing subset of imageFieldNames`)
+    }
+
+    if (required instanceof Array) {
+        required = required.map(fieldName => fieldName + '')
+    } else {
         required = !!required
     }
 
@@ -248,24 +255,27 @@ module.exports = (opts = {}) => {
                 return fieldsMap
             }, {})
 
+            if (errors.length) {
+                console.log(errors)
+                const message = errors.reduce((message, err, index) => `${message}${index + 1}. ${err.message}\n`, '')
+                allSettled(fileResults.fulfilled.map(file => unlink(file.path)))
+                return next(createError(400, message))
+            }
+
             if (required instanceof Array) {
                 if (!includesArray(sendedImageFields, required)) {
                     // const error = new Error(`Sended image fields: ${sendedImageFields} are not include all required image fields: ${required}`)
                     // error.sended = sendedImageFields
                     // error.required = required
+                    await allSettled(fileResults.fulfilled.map(file => unlink(file.path)))
                     return next(createError(400, `Sended image fields: ${sendedImageFields} are not include all required image fields: ${required}`))
                 }
 
             } else {
                 if (required && !includesArray(sendedImageFields, imageFieldNames)) {
+                    allSettled(fileResults.fulfilled.map(file => unlink(file.path)))
                     return next(createError(400, `Sended image fields: ${sendedImageFields} are not include all required image fields: ${imageFieldNames}`))
                 }
-            }
-
-            if (errors.length) {
-                console.log(errors)
-                const message = errors.reduce((message, err, index) => `${message}${index + 1}. ${err.message}\n`, '')
-                return next(createError(400, message))
             }
 
             next()
