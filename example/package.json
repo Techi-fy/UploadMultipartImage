@@ -5,11 +5,15 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon --watch . --ext js,ts --exec 'node index.js'"
   },
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
     "@exio.tech/upload-multipart-image": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
