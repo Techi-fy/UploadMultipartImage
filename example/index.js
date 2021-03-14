@@ -31,7 +31,7 @@ app.post('/', uploadImage({
     filename: (fileInfo) => fileInfo.defaultFilename + '.png',
     sharp: (fileInfo) => fileInfo.defaultSharp.rotate(140).resize(400, 400).png(),
 }), (req, res, next) => {
-    res.send(req.file)
+    res.send(req.files)
 })
 
 app.listen(8000, (err) => {
