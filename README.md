@@ -50,15 +50,15 @@ app.listen(8000, (err) => {
 ```
 Key | Description | Default
 ---| ---| ---|
-**imageFieldNames?** | Defines which image fieldnames your application expects. If any, then not expected image fields will fire **errors**, if nothing expeted, then any files will be simply thrown away | **[]**, i.e. images will thrown away
+**imageFieldNames?** | Defines which image fieldnames your application expects. If any expected, then if not expected image fields encountered before all expected ones are processed, **error** will be fired, if nothing expeted, then any files will be simply thrown away | **[]**, i.e. images will thrown away
 **required?** | Defines subset of **imageFieldNames** which are required, or boolean which indicates if all provided **imageFieldNames** are required | **true**
 **destination?** | Defines folder path where to save uploaded images | **os.tmpdir()**
 **filename?** | Defines filename to save image with (extension included) | **uuidv4()**
 **sharp?** | Defines function which **MUST** return new Instance of sharp to process images | **sharp()**
-**imageMaxSize** | Defines Max Size in bytes for image fields, Details and Default See - [BusBoy limits:fileSize](busboy-options)
-**fieldNameSize** | Defines fieldnames Max Size in bytes, Details and Default See - [BusBoy limits:fieldNameSize](busboy-options)
-**fieldSize** | Defines non-image field value Max Size in bytes, Details and Default See - [BusBoy limits:fieldSize](busboy-options)
-**fields** | Defines non-image fields Max count, Details and Default See - [BusBoy limits:fields](busboy-options)
+**imageMaxSize?** | Defines Max Size in bytes for image fields, Details and Default See - [BusBoy limits:fileSize](busboy-options)
+**fieldNameSize?** | Defines fieldnames Max Size in bytes, Details and Default See - [BusBoy limits:fieldNameSize](busboy-options)
+**fieldSize?** | Defines non-image field value Max Size in bytes, Details and Default See - [BusBoy limits:fieldSize](busboy-options)
+**fields?** | Defines non-image fields Max count, Details and Default See - [BusBoy limits:fields](busboy-options)
 
 If **imageFieldNames** is an array of convertables to strings, then files metadata will be provided
 with **req.files**, if it is a string, then it will be provided with **req.file**.

@@ -1,9 +1,34 @@
 import {
     Sharp,
 } from 'sharp'
-import {
-    RequestHandler,
-} from 'express'
+import { RequestHandler } from 'express';
+
+declare global {
+    namespace Express {
+        interface Request {
+            /** Image metadata if **imageFieldName** is a string */
+            file: RequestImage;
+            /**
+             * Array of images metadata if **imageFieldName** is an array
+             */
+            files: RequestImage[];
+        }
+    }
+}
+
+interface RequestImage {
+    /**File fieldname in form */
+    fieldname: string;
+    /**Destination of tha file */
+    dist: string;
+    /**File generated name */
+    filename: string;
+    /**File original name */
+    originalname: string;
+    /**File full path */
+    path: string;
+}
+
 
 interface fileInfo {
     /**

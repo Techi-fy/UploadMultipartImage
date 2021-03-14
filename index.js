@@ -146,13 +146,13 @@ module.exports = (opts = {}) => {
                     })
                 }
 
-                let fname, fpath
+                let dpath, fname, fpath
                 try {
-                    const dpath = await destinationFunc(fileInfo)
+                    dpath = await destinationFunc(fileInfo)
                     fname = await filenameFunc(fileInfo)
                     await mkdir(dpath, {
                         recursive: true
-                    });
+                    })
                     fpath = path.join(dpath, fname)
                 } catch (err) {
                     file.resume()
@@ -212,8 +212,10 @@ module.exports = (opts = {}) => {
                         }
 
                         res({
+                            fieldname,
                             filename: fname,
                             originalname: filename,
+                            dist: dpath,
                             path: fpath,
                         })
                     }))
@@ -267,7 +269,7 @@ module.exports = (opts = {}) => {
                     // const error = new Error(`Sended image fields: ${sendedImageFields} are not include all required image fields: ${required}`)
                     // error.sended = sendedImageFields
                     // error.required = required
-                    await allSettled(fileResults.fulfilled.map(file => unlink(file.path)))
+                    allSettled(fileResults.fulfilled.map(file => unlink(file.path)))
                     return next(createError(400, `Sended image fields: ${sendedImageFields} are not include all required image fields: ${required}`))
                 }
 

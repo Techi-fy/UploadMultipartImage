@@ -25,8 +25,8 @@ app.get('/', (req, res, next) => {
 })
 
 app.post('/', uploadImage({
-    imageFieldNames: [],
-    required: [],
+    imageFieldNames: ['imagefield', 'imagefield2'],
+    required: ['imagefield'],
     destination: (fileInfo) => path.join(ROOT_DIR, './images'),
     filename: (fileInfo) => fileInfo.defaultFilename + '.png',
     sharp: (fileInfo) => fileInfo.defaultSharp.rotate(140).resize(400, 400).png(),
