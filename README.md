@@ -2,10 +2,10 @@
 
 ## Description
 A node.js module for handling uploaded images and text fields with
-**multipart/form-data** for [express.js](express).
+**multipart/form-data** for [express.js][express].
 
 ## Requirements
-- [node.js](https://nodejs.org/) -- v11.5.0 or newer
+- [node.js][nodejs] -- v11.5.0 or newer
 
 ## Usage
 ```javascript
@@ -55,10 +55,10 @@ Key | Description | Default
 **destination?** | Defines folder path where to save uploaded images | **os.tmpdir()**
 **filename?** | Defines filename to save image with (extension included) | **uuidv4()**
 **sharp?** | Defines function which **MUST** return new Instance of sharp to process images | **sharp()**
-**imageMaxSize?** | Defines Max Size in bytes for image fields, Details and Default See - [BusBoy limits:fileSize](busboy-options)
-**fieldNameSize?** | Defines fieldnames Max Size in bytes, Details and Default See - [BusBoy limits:fieldNameSize](busboy-options)
-**fieldSize?** | Defines non-image field value Max Size in bytes, Details and Default See - [BusBoy limits:fieldSize](busboy-options)
-**fields?** | Defines non-image fields Max count, Details and Default See - [BusBoy limits:fields](busboy-options)
+**imageMaxSize?** | Defines Max Size in bytes for image fields, Details and Default See - [BusBoy limits:fileSize][busboy-options]
+**fieldNameSize?** | Defines fieldnames Max Size in bytes, Details and Default See - [BusBoy limits:fieldNameSize]:[busboy-options]
+**fieldSize?** | Defines non-image field value Max Size in bytes, Details and Default See - [BusBoy limits:fieldSize][busboy-options]
+**fields?** | Defines non-image fields Max count, Details and Default See - [BusBoy limits:fields][busboy-options]
 
 If **imageFieldNames** is an array of convertables to strings, then files metadata will be provided
 with **req.files**, if it is a string, then it will be provided with **req.file**.
@@ -69,3 +69,4 @@ Other details see in **TSDocs**.
 
 [busboy-options]:(https://www.npmjs.com/package/busboy#busboy-methods)
 [express]:(https://www.npmjs.com/package/express)
+[nodejs]:(https://nodejs.org/)
