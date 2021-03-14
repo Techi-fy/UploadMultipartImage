@@ -56,7 +56,7 @@ Key | Description | Default
 **filename?** | Defines filename to save image with (extension included) | **uuidv4()**
 **sharp?** | Defines function which **MUST** return new Instance of sharp to process images | **sharp()**
 **imageMaxSize?** | Defines Max Size in bytes for image fields, Details and Default See - [BusBoy limits:fileSize][busboy-options]
-**fieldNameSize?** | Defines fieldnames Max Size in bytes, Details and Default See - [BusBoy limits:fieldNameSize]:[busboy-options]
+**fieldNameSize?** | Defines fieldnames Max Size in bytes, Details and Default See - [BusBoy limits:fieldNameSize][busboy-options]
 **fieldSize?** | Defines non-image field value Max Size in bytes, Details and Default See - [BusBoy limits:fieldSize][busboy-options]
 **fields?** | Defines non-image fields Max count, Details and Default See - [BusBoy limits:fields][busboy-options]
 
