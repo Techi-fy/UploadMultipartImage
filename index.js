@@ -108,16 +108,21 @@ module.exports = (opts = {}) => {
     }
 
     return async function (req, res, next) {
-        const busboy = new Busboy({
-            headers: req.headers,
-            limits: {
-                files: imageFieldNames.length,
-                fileSize: imageMaxSize,
-                fieldNameSize,
-                fieldSize,
-                fields,
-            }
-        })
+        let busboy
+        try {
+            busboy = new Busboy({
+                headers: req.headers,
+                limits: {
+                    files: imageFieldNames.length,
+                    fileSize: imageMaxSize,
+                    fieldNameSize,
+                    fieldSize,
+                    fields,
+                }
+            })
+        } catch {
+            return next(createError(400, 'Invalid headers'))
+        }
         req.pipe(busboy)
 
         const sendedImageFields = []
